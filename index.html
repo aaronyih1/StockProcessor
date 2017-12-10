@@ -21,68 +21,7 @@ td {
 
 <body>
   <div id="tabs">
-<!--     <ul>
-      <li><a href="#tabs-1">Intro</a></li>
-      <li><a href="#tabs-2">toArray()</a></li>
-      <li><a href="#tabs-3">toArrays()</a></li>
-      <li><a href="#tabs-4">toObjects()</a></li>
-      <li><a href="#tabs-5">fromArrays()</a></li>
-      <li><a href="#tabs-6">fromObjects()</a></li>
-    </ul> -->
-<!--     <div id="tabs-1">
-      <h2>Welcome to the jQuery-CSV Basic Usage Demonstration</h2>
-      <p>On the adjacent tabs, you will find examples demonstrating the usage of the jQuery-CSV library.</p>
-      <p>Samples datasets will be provided with each example but if you want, you may insert your own data. Just press the 'Run' button to re-execute the parser.</p>
-      <hr />
-      <p>The main project page can be found on <a href="http://code.google.com/p/jquery-csv/">Google Code</a></p>
-      <p>If you want the complete documentation. Goto: <a href="http://code.google.com/p/jquery-csv/wiki/API">API Wiki</a></p>
-      <p>If you would like to provide feedback, you may do so on the <a href="http://code.google.com/p/jquery-csv/wiki/Feedback">Feedback Wiki</a>.</p>
-      <p>If you find a bug, report a 'Defect' in the <a href="http://code.google.com/p/jquery-csv/issues/list">Issues</a> section of the project site.</p>
-      <p>If you have a suggestion for a new feature, create a 'Feature Request' in the <a href="http://code.google.com/p/jquery-csv/issues/list">Issues</a> section of the project site.</p>
-      <hr />
-      <h2>Enjoy...</h2>
-    </div> -->
-<!--     <div id="tabs-2">
-      <h2>$.csv.toArray()</h2>
-      <p>Used to parse a single line of CSV data into an array of values.</p>
-      <p>Usage:
-      <div style="font-style:italic;">var result = $.csv.toArray(input);</div>
-      </p>
-      <hr />
-      <h4>Input Data:</h4>
-      <textarea id="input1" style="height:25px;">"You will come back stronger then ever","like Lance Armstrong","but with two balls"</textarea>
-      <input id="run1" type="button" value="Run" />
-      <hr />
-      <h4>Result:</h4>
-      <div class="result">
-        <table id="result1" border="1"></table>
-      </div>
-    </div> -->
-<!--     <div id="tabs-3">
-      <h2>$.csv.toArrays()</h2>
-      <p>Used to parse multi-line CSV data into a JavaScript 2D (two-dimensional) array.</p>
-      <p>Usage:
-      <div style="font-style:italic;">var result = $.csv.toArrays(input);</div>
-      </p>
-      <hr />
-      <h4>Input Data:</h4>
-      <textarea id="input2" style="height:150px;">"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."
-"All work","and no play","makes Jack","a dull boy..."</textarea>
-      <input id="run2" type="button" value="Run" />
-      <hr />
-      <h4>Result:</h4>
-      <div class="result">
-        <table id="result2" border="1"></table>
-      </div>
-    </div> -->
+
     <div id="tabs-4">
       <h2>Stock Report Software</h2>
       <p>just copy and paste the text from a csv file into the field below, and a report will be generated.</p>
@@ -93,13 +32,36 @@ td {
       </p> -->
       <hr />
       <h4>Input Data:</h4>
-      <textarea id="input3" style="height:150px;">
-</textarea>
+      <input id="csvFileInput" type="file" accept=".csv" onchange='triggerValidation(this)'>
+      <textarea id="output" cols="60" rows="10">placeholder</textarea>
+      <button onclick="exportTableToCSV('members.csv')">Export HTML Table To CSV File</button>
+<!--       <textarea id="input3" style="height:150px;">Symbol,Quantity,Price,ActionNameUS,TradeDate,SettledDate,Interest,Amount,Commission,Fees,CUSIP,Description,TradeNumber,RecordType
+SHOP,20.0000,97.50,Buy,12/4/2017,12/6/2017,0.00,-1950.00,0.0000,0.0000,82509L107,Bought 20 Shares of SHOP at $97.50,00000,Trade
+ULTA,-10.0000,223.03,Sell,12/4/2017,12/6/2017,0.00,2230.26,-0.0400,0.0400,90384S303,Sold 10 Shares of ULTA at $223.03,60000,Trade
+BABA,15.0000,174.65,Buy,12/4/2017,12/6/2017,0.00,-2619.75,0.0000,0.0000,01609W102,Bought 15 Shares of BABA at $174.65,50000,Trade
+WDC,50.0000,79.3195,Buy,12/4/2017,12/6/2017,0.00,-3965.98,0.0000,0.0000,958102105,Bought 50 Shares of WDC at $79.3195,80000,Trade
+KO,-100.0000,45.90,Sell,12/1/2017,12/5/2017,0.00,4589.89,-0.1100,0.1000,191216100,Sold 100 Shares of KO at $45.90,90001,Trade
+ULTA,10.0000,201.50,Buy,12/1/2017,12/5/2017,0.00,-2015.00,0.0000,0.0000,90384S303,Bought 10 Shares of ULTA at $201.50,00000,Trade
+INTC,0.0000,0.0,Dividend,12/1/2017,,0.00,8147.75,0.0000,0.0000,458140100,"INTEL CORPORATION DIVIDEND ON 29,900 SHARES OF INTC @ .27250",,Financial
+OSTK,50.0000,46.90,Buy,11/30/2017,12/4/2017,0.00,-2345.00,0.0000,0.0000,690370101,Bought 50 Shares of OSTK at $46.90,00000,Trade
+BABA,10.0000,177.90,Buy,11/30/2017,12/4/2017,0.00,-1779.00,0.0000,0.0000,01609W102,Bought 10 Shares of BABA at $177.90,00000,Trade
+GS,-20.0000,245.70,Sell,11/30/2017,12/4/2017,0.00,4913.89,-0.1100,0.1100,38141G104,Sold 20 Shares of GS at $245.70,90000,Trade
+Cash,0.0000,0.0,Credit Interest,11/30/2017,,0.00,0.19,0.0000,0.0000,,"INT EARNED BANK DEP PROGRAM 30 DAYS @ 0.01% APYE 0.01% AVERAGE CREDIT BALANCE 22,997.00 ",,Financial
+KO,100.0000,45.35,Buy,11/29/2017,12/1/2017,0.00,-4535.00,0.0000,0.0000,191216100,Bought 100 Shares of KO at $45.35,00000,Trade
+ADSK,20.0000,111.41,Buy,11/29/2017,12/1/2017,0.00,-2228.20,0.0000,0.0000,052769106,Bought 20 Shares of ADSK at $111.41,00000,Trade
+WDC,40.0000,85.12,Buy,11/29/2017,12/1/2017,0.00,-3404.80,0.0000,0.0000,958102105,Bought 40 Shares of WDC at $85.12,00000,Trade
+CPB,-30.0000,47.95,Sell,11/29/2017,12/1/2017,0.00,1438.47,-0.0300,0.0300,134429109,Sold 30 Shares of CPB at $47.95,70000,Trade
+JWN,-70.0000,44.71,Sell,11/29/2017,12/1/2017,0.00,3129.63,-0.0700,0.0700,655664100,Sold 70 Shares of JWN at $44.71,30000,Trade
+SNAP,-300.0000,13.95,Sell,11/29/2017,12/1/2017,0.00,4184.88,-0.1200,0.0900,83304A106,Sold 300 Shares of SNAP at $13.95,80003,Trade
+WSM,-50.0000,47.80,Sell,11/29/2017,12/1/2017,0.00,2389.95,-0.0500,0.0500,969904101,Sold 50 Shares of WSM at $47.80,50000,Trade
+HPE,-200.0000,13.75,Sell,11/28/2017,11/30/2017,0.00,2749.92,-0.0800,0.0600,42824C109,Sold 200 Shares of HPE at $13.75,20002,Trade
+WDC,30.0000,86.90,Buy,11/28/2017,11/30/2017,0.00,-2607.00,0.0000,0.0000,958102105,Bought 30 Shares of WDC at $86.90,00000,Trade
+</textarea> -->
       <input id="run3" type="button" value="Run" />
       <hr />
       <h4>Result:</h4>
       <div class="result">
-        <table id="transactions-table"><tr><td>Name</td><td>Quantity</td><td>Price</td><td>Amount</td><td>|||||||||||||</td><td>Name</td><td>Quantity</td><td>Price</td><td>Amount</td><td></td><td>Net</td><td></td><td>Remark</td></tr></table>
+        <table id="transactions-table"></table>
         <table id="result3" border="1"></table>
       </div>
     </div>
@@ -131,6 +93,7 @@ td {
 
   <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
   <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+  <script src= "js/csv.js"></script>
   <script src= "js/stock.js"></script>
   <script src="js/display.js"></script>
   <script src="js/jquery.csv.min.js"></script>

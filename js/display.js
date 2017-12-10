@@ -19,7 +19,8 @@ $(document).ready(function() {
 
 
   $('#run3').bind('click', function() {
-    fourtyTwo();
+    //console.log("clickkyyyy");
+    //fourtyTwo();
     example3();
   });
 });
@@ -38,48 +39,65 @@ $(document).ready(function() {
 //   $('#result2').html(html);
 // }
 function example3() {
-  var input = $('#input3').val();
+  //console.log("running!");
+  var input = $('#output').val();
   var data = $.csv.toObjects(input);
-  var html = generateTable(data);
+  //var html = generateTable(data);
+  $('#transactions-table').empty();
+  MasterStockList = [];
+  grouped = [];
   processStocks(data);
-  console.log(data);
-  $('#result3').empty();
-  $('#result3').html(html);
+  //console.log(data);
+
+  //$('#result3').html(html);
 }
-// build HTML table data from an array (one or two dimensional)
-function generateTable(data) {
-  var html = '';
-  if(typeof(data[0]) === 'undefined') {
-    return null;
-  }
-  if(data[0].constructor === String) {
-    html += '<tr>\r\n';
-    for(var item in data) {
-      html += '<td>' + data[item] + '</td>\r\n';
-    }
-    html += '</tr>\r\n';
-  }
-  if(data[0].constructor === Array) {
-    for(var row in data) {
-      html += '<tr>\r\n';
-      for(var item in data[row]) {
-        html += '<td>' + data[row][item] + '</td>\r\n';
+
+function display(){
+  $("#transactions-table").append("<tr><td>Date</td><td>Quantity</td><td>Price</td><td>Amount</td><td>|||||||||||||</td><td>Name</td><td>Quantity</td><td>Price</td><td>Amount</td><td></td><td>Net</td><td></td><td>Remark</td></tr>");
+  grouped.forEach(function (a) {
+    $("#transactions-table").append("<tr><td><b>"+a.name+"</b></td><td></td><td></td><td></td><td></td><td><b>"+a.name+"</b></td><td></td><td></td><td></td><td></td><td></td></tr>")
+    //console.log(a.buys.length);
+
+    for(var i = 0; i<Math.max(a.buys.length, a.sells.length); i++){
+      var buy;
+      var sell;
+      if(i>=Math.min(a.buys.length, a.sells.length)){
+        if(a.buys.length > a.sells.length){
+          sell =  "<td></td><td></td><td></td><td></td><td></td></tr>";
+          //console.log(a.buys[i]);
+          buy = "<tr><td>"+a.buys[i].date+"</td><td>"+a.buys[i].quantity+"</td><td>"+a.buys[i].price+"</td><td>"+a.buys[i].amount+"</td>";
+        }
+        else{
+          buy =  "<tr><td></td><td></td><td></td><td></td>";
+          sell = "<td></td><td>"+a.sells[i].date+"</td><td>"+a.sells[i].quantity+"</td><td>"+a.sells[i].price+"</td><td>"+a.sells[i].amount+"</td></tr>";
+        }
+
       }
-      html += '</tr>\r\n';
-    }
-  }
-  if(data[0].constructor === Object) {
-    for(var row in data) {
-      html += '<tr>\r\n';
-      for(var item in data[row]) {
-        html += '<td>' + item + ':' + data[row][item] + '</td>\r\n';
+      else{
+        buy = "<tr><td>"+a.buys[i].date+"</td><td>"+a.buys[i].quantity+"</td><td>"+a.buys[i].price+"</td><td>"+a.buys[i].amount+"</td>";
+        sell = "<td></td><td>"+a.sells[i].date+"</td><td>"+a.sells[i].quantity+"</td><td>"+a.sells[i].price+"</td><td>"+a.sells[i].amount+"</td></tr>";
       }
-      html += '</tr>\r\n';
+      $("#transactions-table").append(buy+sell);
     }
-  }
-  
-  return html;
+
+    $("#transactions-table").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>"+calcNet(a)+"</td><td>"+longOrShort(a)+"</td>/tr>")
+    //a.transactions.forEach(function (b) {
+      // if(b.amount<0){
+
+      // }
+      // var buy = "<tr><td></td><td></td><td></td><td></td>";
+      // var sell = "<tr><td></td><td></td><td></td><td></td>";
+      // if(b.amount<0){
+      //  buy = "<tr><td>"+b.date+"</td><td>"+b.quantity+"</td><td>"+b.price+"</td><td>"+b.amount+"</td>";
+      // }
+      // else{
+      //  sell = "<td></td><td>"+b.date+"</td><td>"+b.quantity+"</td><td>"+b.price+"</td><td>"+b.amount+"</td></tr>";
+      // }
+      // console.log(buy);
+      // console.log(sell);
+      // console.log(buy+sell);
+      // $("#transactions-table").append(buy+sell);
+    //});
+  });
 }
-function fourtyTwo() {
-  alert('Reticulating Splines...');
-}
+

@@ -1,6 +1,6 @@
 var MasterStockList = [];
 var grouped = [];
-
+var called = false;
 function Stock(name){
 	this.name = name;
 	//this.transactions = transactions;
@@ -15,22 +15,33 @@ function Transaction(date, quantity, price, amount){
 
 }
 function processStocks(data){
-	console.log(data);
+	//console.log(data);
 	for(var i = 0; i < data.length; i++){
 		MasterStockList.push(data[i]);
 	}
+	if(called){
+		clearOldTransactions();
+	}
+	//clearOldTransactions();
 	sortStocks();
 	display();
-
+	called = true;
 }
 function sortStocks(){
-	
+	console.log(grouped);
 	MasterStockList.forEach(function (a) {
-	    //console.log(a);
-	    //console.log(findWithAttr(grouped, 'name', a.Symbol));
+	    // console.log(a);
+	    // console.log(grouped[findWithAttr(grouped, 'name', a.Symbol)]);
+
 	    if(findWithAttr(grouped, 'name', a.Symbol) == -1){
 	    	grouped.push(new Stock(a.Symbol));
 	    }
+
+	    // if (called == true){
+	    // 	grouped[findWithAttr(grouped, 'name', a.Symbol)].buys = [];
+	    // 	grouped[findWithAttr(grouped, 'name', a.Symbol)].sells = [];
+	    // }
+
 	    if(a.ActionNameUS == "Buy"){
 	    	grouped[findWithAttr(grouped, 'name', a.Symbol)].buys.push(new Transaction(a.TradeDate, a.Quantity, a.Price, a.Amount));
 	    }
@@ -41,8 +52,21 @@ function sortStocks(){
 	
 }
 
+function clearOldTransactions(){
+	console.log(grouped);
+
+	grouped.forEach(function (a) {
+		grouped[findWithAttr(grouped, 'name', a.name)].buys = [];
+		grouped[findWithAttr(grouped, 'name', a.name)].sells = [];
+	});
+	console.log(grouped);
+	called = true;
+	// grouped.forEach(function(a){
+
+	// });
+}
 function findWithAttr(array, attr, value) {
-	console.log(array);
+	//console.log(array);
     for(var i = 0; i < array.length; i += 1) {
         if(array[i][attr] === value) {
             return i;
@@ -50,66 +74,23 @@ function findWithAttr(array, attr, value) {
     }
     return -1;
 }
-function display(){
-  grouped.forEach(function (a) {
-  	$("#transactions-table").append("<tr><td><b>"+a.name+"</b></td><td></td><td></td><td></td><td></td><td><b>"+a.name+"</b></td><td></td><td></td><td></td><td></td><td></td></tr>")
-  	//console.log(a.buys.length);
-
-  	for(var i = 0; i<Math.max(a.buys.length, a.sells.length); i++){
-  		var buy;
-  		var sell;
-  		if(i>=Math.min(a.buys.length, a.sells.length)){
-  			if(a.buys.length > a.sells.length){
-  				sell =  "<td></td><td></td><td></td><td></td><td></td></tr>";
-  				console.log(a.buys[i]);
-  				buy = "<tr><td>"+a.buys[i].date+"</td><td>"+a.buys[i].quantity+"</td><td>"+a.buys[i].price+"</td><td>"+a.buys[i].amount+"</td>";
-  			}
-  			else{
-  				buy =  "<tr><td></td><td></td><td></td><td></td>";
-  				sell = "<td></td><td>"+a.sells[i].date+"</td><td>"+a.sells[i].quantity+"</td><td>"+a.sells[i].price+"</td><td>"+a.sells[i].amount+"</td></tr>";
-  			}
-
-  		}
-  		else{
-  			buy = "<tr><td>"+a.buys[i].date+"</td><td>"+a.buys[i].quantity+"</td><td>"+a.buys[i].price+"</td><td>"+a.buys[i].amount+"</td>";
-  			sell = "<td></td><td>"+a.sells[i].date+"</td><td>"+a.sells[i].quantity+"</td><td>"+a.sells[i].price+"</td><td>"+a.sells[i].amount+"</td></tr>";
-  		}
-  		$("#transactions-table").append(buy+sell);
-  	}
-
-  	$("#transactions-table").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>"+calcNet(a)+"</td><td>"+longOrShort(a)+"</td>/tr>")
-  	//a.transactions.forEach(function (b) {
-  		// if(b.amount<0){
-
-  		// }
-  		// var buy = "<tr><td></td><td></td><td></td><td></td>";
-  		// var sell = "<tr><td></td><td></td><td></td><td></td>";
-  		// if(b.amount<0){
-  		// 	buy = "<tr><td>"+b.date+"</td><td>"+b.quantity+"</td><td>"+b.price+"</td><td>"+b.amount+"</td>";
-  		// }
-  		// else{
-  		// 	sell = "<td></td><td>"+b.date+"</td><td>"+b.quantity+"</td><td>"+b.price+"</td><td>"+b.amount+"</td></tr>";
-  		// }
-  		// console.log(buy);
-  		// console.log(sell);
-  		// console.log(buy+sell);
-  	  // $("#transactions-table").append(buy+sell);
-  	//});
-  });
-}
 function calcNet(stock){
 	var net = 0;
-	stock.buys.forEach(function(a){
-		net+=parseFloat(a.amount);
-	})
-	stock.sells.forEach(function(a){
-		net+=parseFloat(a.amount);
-	})
-	if(net>0){
-		net= "+"+net;
-	}
-	return(net);
 
+	if((stock.sells.length==0)||(stock.buys.length==0))
+		return("");
+	else{
+		stock.buys.forEach(function(a){
+			net+=parseFloat(a.amount);
+		})
+		stock.sells.forEach(function(a){
+			net+=parseFloat(a.amount);
+		})
+		if(net>0){
+			net= "+"+net;
+		}
+		return(net);
+	}
 }
 function longOrShort(stock){
 	if((stock.sells.length==0)||(stock.buys.length==0))
